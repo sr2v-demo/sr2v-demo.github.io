@@ -52,13 +52,13 @@
 
         /* Tighten the grid: 3 across with a hairline gutter and no row padding. */
         #video_group_1 .flex {
-            gap: 2px;
+            gap: 20px;
             justify-content: flex-start;
             padding: 0;
         }
 
         #video_group_1 .flex > div {
-            width: calc((100% - 2 * 2px) / 3);
+            width: calc((100% - 2 * 20px) / 3);
             margin-top: 0;
             margin-bottom: 0;
         }
@@ -716,7 +716,7 @@
         <h3>Contents</h3>
         <ul class="toc-list">
             <li><a href="#video_group_1">1. Demonstration Part 1: General Interactive Reference-to-Video Generation</a></li>
-            <li><a href="#video_group_2">2. Demonstration Part 2: More Challenging Long and Interactive Reference-to-Video Generation</a></li>
+            <li><a href="#video_group_2">2. Demonstration Part 2: More Challenging Long and Interactive Reference-to-Video Generation </a></li>
             <li><a href="#qualitative-comparison">3. Qualitative Comparison with Previous Methods and Baselines</a></li>
         </ul>
     </section>
@@ -731,32 +731,191 @@
 
         
         <div class="flex flex-dynamic">
-            <!-- Sample 1 -->
+            <!-- Sample 1-1 -->
             <div class="prompt-wrap full-screen-wrap" style="position: relative;">
                 <div class="loading-placeholder">
                     <div class="loading-text">Loading...</div>
                     <div class="loading-icon">&#9749</div>
                 </div>
-                <video autoplay playsinline muted loop onloadeddata="this.style.display='block'; this.previousElementSibling.style.display='none';" src="./assets/streamingr2v_video/1_10s/1-1_stacked.mp4"></video>
+                <video autoplay playsinline muted loop onloadeddata="this.style.display='block'; this.previousElementSibling.style.display='none';" src="./assets/streamingr2v_video/demo_part_1/1-1.mp4"></video>
                 <div class="prompt"> [Prompt 1] Inside a brightly lit medieval palace, a woman stands at the center of the frame, facing the camera. <br> [Prompt 2] A black-curly-haired man enters the frame and takes out an elegant crown adorned with sparkling red gemstones from the bottom of the frame. He shows the crown to the woman. </div>
             </div>
-            <!-- Sample 2 -->
+            <!-- Sample 1-2 -->
             <div class="prompt-wrap full-screen-wrap" style="position: relative;">
                 <div class="loading-placeholder">
                     <div class="loading-text">Loading...</div>
                     <div class="loading-icon">&#9749</div>
                 </div>
-                <video autoplay playsinline muted loop onloadeddata="this.style.display='block'; this.previousElementSibling.style.display='none';" src="./assets/streamingr2v_video/1_10s/1-2_stacked.mp4"></video>
+                <video autoplay playsinline muted loop onloadeddata="this.style.display='block'; this.previousElementSibling.style.display='none';" src="./assets/streamingr2v_video/demo_part_1/1-2.mp4"></video>
                 <div class="prompt">[Prompt 1] In a gym, a man stands behind a table, facing the camera and speaking while occasionally gesturing. On the table is an open white cardboard box. <br> [Prompt 2] The man reaches both hands into the box, takes out a canned protein powder product, holds it up, and continues introducing it to the camera. </div>
             </div>
-            <!-- Sample 3 -->
+            <!-- Sample 1-3 -->
             <div class="prompt-wrap full-screen-wrap" style="position: relative;">
                 <div class="loading-placeholder">
                     <div class="loading-text">Loading...</div>
                     <div class="loading-icon">&#9749</div>
                 </div>
-                <video autoplay playsinline muted loop onloadeddata="this.style.display='block'; this.previousElementSibling.style.display='none';" src="./assets/streamingr2v_video/1_10s/1-3_stacked.mp4"></video>
+                <video autoplay playsinline muted loop onloadeddata="this.style.display='block'; this.previousElementSibling.style.display='none';" src="./assets/streamingr2v_video/demo_part_1/1-3.mp4"></video>
                 <div class="prompt">[Prompt 1] In a light-luxury living room, a red metallic humanoid robot sits on a long brown sofa, facing the camera and raising its hand in expressive gestures. <br> [Prompt 2] A cute brown puppy runs in from the left side of the frame, jumps onto the sofa, and lies besides the robot. </div>
+            </div>
+        </div>
+
+        <hr>
+
+        <div class="flex flex-dynamic">
+            <!-- Sample 2-1 -->
+            <div class="prompt-wrap full-screen-wrap" style="position: relative;">
+                <div class="loading-placeholder">
+                    <div class="loading-text">Loading...</div>
+                    <div class="loading-icon">&#9749</div>
+                </div>
+                <video autoplay playsinline muted loop onloadeddata="this.style.display='block'; this.previousElementSibling.style.display='none';" src="./assets/streamingr2v_video/demo_part_1/2-1.mp4"></video>
+                <div class="prompt"> [Prompt 1] In a rustic-style bar, a full glass of beer sits on the counter. The camera starts focused on the beer, then slowly pulls back to reveal neatly arranged liquor bottles behind the bar. <br> [Prompt 2] A woman enters from the right side of the frame and steps behind the bar, facing the camera. She picks up the beer and drinks heartily. </div>
+            </div>
+            <!-- Sample 2-2 -->
+            <div class="prompt-wrap full-screen-wrap" style="position: relative;">
+                <div class="loading-placeholder">
+                    <div class="loading-text">Loading...</div>
+                    <div class="loading-icon">&#9749</div>
+                </div>
+                <video autoplay playsinline muted loop onloadeddata="this.style.display='block'; this.previousElementSibling.style.display='none';" src="./assets/streamingr2v_video/demo_part_1/2-2.mp4"></video>
+                <div class="prompt">[Prompt 1] In a living room, a man and a woman sit side by side on a leather sofa, speaking to the camera and occasionally looking at each other. <br> [Prompt 2] The woman stands up and walks left out of the frame while the man remains seated on the leather sofa. </div>
+            </div>
+            <!-- Sample 2-3 -->
+            <div class="prompt-wrap full-screen-wrap" style="position: relative;">
+                <div class="loading-placeholder">
+                    <div class="loading-text">Loading...</div>
+                    <div class="loading-icon">&#9749</div>
+                </div>
+                <video autoplay playsinline muted loop onloadeddata="this.style.display='block'; this.previousElementSibling.style.display='none';" src="./assets/streamingr2v_video/demo_part_1/2-3.mp4"></video>
+                <div class="prompt">[Prompt 1] On a home-style coffee table, a minimalist vase holds several roses. The camera remains static, focused on the vase and flowers. <br> [Prompt 2] A cute hummingbird flies in from the left side of the frame, fluttering its wings as it approaches the roses and tries to peck the petals.   </div>
+            </div>
+        </div>
+
+        <hr>
+
+        <div class="flex flex-dynamic">
+            <!-- Sample 3-1 -->
+            <div class="prompt-wrap full-screen-wrap" style="position: relative;">
+                <div class="loading-placeholder">
+                    <div class="loading-text">Loading...</div>
+                    <div class="loading-icon">&#9749</div>
+                </div>
+                <video autoplay playsinline muted loop onloadeddata="this.style.display='block'; this.previousElementSibling.style.display='none';" src="./assets/streamingr2v_video/demo_part_1/3-1.mp4"></video>
+                <div class="prompt"> [Prompt 1] On a sunny campus rugby field, a man sits on the grass, smoothly placing a brown rugby ball on his lap and speaking to the camera. <br> [Prompt 2] A shepherd dog runs in from the rear right, facing the camera, then stops in front of the man and looks toward the camera. The shepherd dog taps the ball with its paw. </div>
+            </div>
+            <!-- Sample 3-2 -->
+            <div class="prompt-wrap full-screen-wrap" style="position: relative;">
+                <div class="loading-placeholder">
+                    <div class="loading-text">Loading...</div>
+                    <div class="loading-icon">&#9749</div>
+                </div>
+                <video autoplay playsinline muted loop onloadeddata="this.style.display='block'; this.previousElementSibling.style.display='none';" src="./assets/streamingr2v_video/demo_part_1/3-2.mp4"></video>
+                <div class="prompt">[Prompt 1] On a sidewalk beside a tree-lined campus road, a young man wearing a black suit and tie walks leisurely toward the camera, facing the camera and speaking happily. <br> [Prompt 2] A woman walks in the frame and walk alongside the man. <br> [Prompt 3] The young man walks toward the left side of the camera and disappears from the frame, while the woman continues walking forward. </div>
+            </div>
+            <!-- Sample 3-3 -->
+            <div class="prompt-wrap full-screen-wrap" style="position: relative;">
+                <div class="loading-placeholder">
+                    <div class="loading-text">Loading...</div>
+                    <div class="loading-icon">&#9749</div>
+                </div>
+                <video autoplay playsinline muted loop onloadeddata="this.style.display='block'; this.previousElementSibling.style.display='none';" src="./assets/streamingr2v_video/demo_part_1/3-3.mp4"></video>
+                <div class="prompt">[Prompt 1] In a sunlit garden, a small cat squats beside a soccer ball and lightly taps it with one front paw. <br> [Prompt 2] The cat gets to its feet and dashes out of the right side of the shot, leaving the soccer ball on the lawn. </div>
+            </div>
+        </div>
+
+        <hr>
+
+        <div class="flex flex-dynamic">
+            <!-- Sample 4-1 -->
+            <div class="prompt-wrap full-screen-wrap" style="position: relative;">
+                <div class="loading-placeholder">
+                    <div class="loading-text">Loading...</div>
+                    <div class="loading-icon">&#9749</div>
+                </div>
+                <video autoplay playsinline muted loop onloadeddata="this.style.display='block'; this.previousElementSibling.style.display='none';" src="./assets/streamingr2v_video/demo_part_1/4-1.mp4"></video>
+                <div class="prompt"> [Prompt 1] A red sports car is parked motionless along the roadside. <br> [Prompt 2] A humanoid robot in red armor walks into the frame from the right side, facing the camera, and comes to the front of the red sports car. The robot stops and faces the camera while gesturing with its hands. </div>
+            </div>
+            <!-- Sample 4-2 -->
+            <div class="prompt-wrap full-screen-wrap" style="position: relative;">
+                <div class="loading-placeholder">
+                    <div class="loading-text">Loading...</div>
+                    <div class="loading-icon">&#9749</div>
+                </div>
+                <video autoplay playsinline muted loop onloadeddata="this.style.display='block'; this.previousElementSibling.style.display='none';" src="./assets/streamingr2v_video/demo_part_1/4-2.mp4"></video>
+                <div class="prompt">[Prompt 1] A green plant sits on a wooden table. The camera remains steady, showing the full plant clearly. <br> [Prompt 2] A cute white dog enters the frame from the right side of the table, walks to the right side of the plant, and lies down beside it. <br> [Prompt 3] A hummingbird enters from the right side of the frame, flies beside the plant, hovers in the air with rapidly fluttering wings, and pecks at the flowers with its beak. </div>
+            </div>
+            <!-- Sample 4-3 -->
+            <div class="prompt-wrap full-screen-wrap" style="position: relative;">
+                <div class="loading-placeholder">
+                    <div class="loading-text">Loading...</div>
+                    <div class="loading-icon">&#9749</div>
+                </div>
+                <video autoplay playsinline muted loop onloadeddata="this.style.display='block'; this.previousElementSibling.style.display='none';" src="./assets/streamingr2v_video/demo_part_1/4-3.mp4"></video>
+                <div class="prompt">[Prompt 1] On a modern British-style street with stores, a medieval-style horse walks slowly to the right along the road. The camera tracks right smoothly, keeping the horse relatively centered and steady. <br> [Prompt 2] As the horse walks and the camera tracks right smoothly, a bronze-colored bishop statue appears on the right side of the frame. <br> [Prompt 3] The camera remains completely still and locked off as the horse continues walking to the right, gradually moving past the bronze-colored statue and exiting the frame. </div>
+            </div>
+        </div>
+
+        <hr>
+        <div class="flex flex-dynamic">
+            <!-- Sample 5-1 -->
+            <div class="prompt-wrap full-screen-wrap" style="position: relative;">
+                <div class="loading-placeholder">
+                    <div class="loading-text">Loading...</div>
+                    <div class="loading-icon">&#9749</div>
+                </div>
+                <video autoplay playsinline muted loop onloadeddata="this.style.display='block'; this.previousElementSibling.style.display='none';" src="./assets/streamingr2v_video/demo_part_1/5-1.mp4"></video>
+                <div class="prompt"> [Prompt 1] In a small theater with soft, clear ambient lighting, a man sits on the chair, facing the camera. The rest of the seats remain empty. He holds a bag of chips, takes chips from it, and eats them. <br> [Prompt 2] An Asian woman wearing a pink tank top and a white long skirt enters from the left side of the frame and sits in the empty seat. [Prompt 3] The two people suddenly burst into laughter, as if watching a funny movie scene. </div>
+            </div>
+            <!-- Sample 5-2 -->
+            <div class="prompt-wrap full-screen-wrap" style="position: relative;">
+                <div class="loading-placeholder">
+                    <div class="loading-text">Loading...</div>
+                    <div class="loading-icon">&#9749</div>
+                </div>
+                <video autoplay playsinline muted loop onloadeddata="this.style.display='block'; this.previousElementSibling.style.display='none';" src="./assets/streamingr2v_video/demo_part_1/5-2.mp4"></video>
+                <div class="prompt">[Prompt 1] A man sits on a beach lounge chair on a sandy beach, with a sun umbrella beside him, facing the camera, holding a cut cat in his arms. <br> [Prompt 2] The coffee-brown cat suddenly leaves the man’s arms and runs to exit the frame on the left. The man remains seated on the beach lounge chair beside the sun umbrella, and begins talking. </div>
+            </div>
+            <!-- Sample 5-3 -->
+            <div class="prompt-wrap full-screen-wrap" style="position: relative;">
+                <div class="loading-placeholder">
+                    <div class="loading-text">Loading...</div>
+                    <div class="loading-icon">&#9749</div>
+                </div>
+                <video autoplay playsinline muted loop onloadeddata="this.style.display='block'; this.previousElementSibling.style.display='none';" src="./assets/streamingr2v_video/demo_part_1/5-3.mp4"></video>
+                <div class="prompt">[Prompt 1] On a Parisian-style street, a black horse with red feather decorations slowly walks along one side of the road toward the right. The camera smoothly pans right with it, keeping the horse relatively still. <br> [Prompt 2] As the camera moves, a woman in a denim top and white trousers appears on the right, holding the blue guitar against her front in a playing position. </div>
+            </div>
+        </div>
+
+        <hr>
+
+        <div class="flex flex-dynamic">
+            <!-- Sample 6-1 -->
+            <div class="prompt-wrap full-screen-wrap" style="position: relative;">
+                <div class="loading-placeholder">
+                    <div class="loading-text">Loading...</div>
+                    <div class="loading-icon">&#9749</div>
+                </div>
+                <video autoplay playsinline muted loop onloadeddata="this.style.display='block'; this.previousElementSibling.style.display='none';" src="./assets/streamingr2v_video/demo_part_1/6-1.mp4"></video>
+                <div class="prompt"> [Prompt 1] In a bright laboratory, a doctor stands behind a lab workbench, facing the camera and speaking. A protein powder product sits on the workbench in front of him. <br> [Prompt 2] An athletic man enters from the right side of the frame and sits next to the doctor in front of the lab workbench. <br> [Prompt 3] The doctor picks up the protein powder product hands it to the athletic man. </div>
+            </div>
+            <!-- Sample 6-2 -->
+            <div class="prompt-wrap full-screen-wrap" style="position: relative;">
+                <div class="loading-placeholder">
+                    <div class="loading-text">Loading...</div>
+                    <div class="loading-icon">&#9749</div>
+                </div>
+                <video autoplay playsinline muted loop onloadeddata="this.style.display='block'; this.previousElementSibling.style.display='none';" src="./assets/streamingr2v_video/demo_part_1/6-2.mp4"></video>
+                <div class="prompt">[Prompt 1] In a warm-lit building corridor with several open doors on both sides, a man in a light-blue shirt and long jeans walks toward the camera. The camera steadily moves backward, keeping him relatively still in frame. <br> [Prompt 2] The woman in a long blue dress walks alongside the man, and they occasionally look at each other. <br> [Prompt 3] The man walks into a door on the corridor beside them to leave the frame, while the woman continues walking forward. </div>
+            </div>
+            <!-- Sample 6-3 -->
+            <div class="prompt-wrap full-screen-wrap" style="position: relative;">
+                <div class="loading-placeholder">
+                    <div class="loading-text">Loading...</div>
+                    <div class="loading-icon">&#9749</div>
+                </div>
+                <video autoplay playsinline muted loop onloadeddata="this.style.display='block'; this.previousElementSibling.style.display='none';" src="./assets/streamingr2v_video/demo_part_1/6-3.mp4"></video>
+                <div class="prompt">[Prompt 1] At a celebrity meet-and-greet event, a woman in a glamorous long black dress stands at center stage, facing the camera, holding a cocktail glass. <br> [Prompt 2] A man enters from the right side of the frame and walks to the woman’s side. They stand together, facing the camera and smiling. </div>
             </div>
         </div>
     </section>
