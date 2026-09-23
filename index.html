@@ -1,0 +1,1034 @@
+<html lang="en">
+  <head><meta http-equiv="Content-Type" content="text/html; charset=windows-1252">
+    <title>StreamingR2V Demo Page</title>
+    <meta name="description" content="StreamingR2V: Towards Long and Interactive Reference-to-Video Generation">
+    <meta name="keywords" content="Video generation, Diffusion model">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="theme-color" content="#EDE8F5">
+    <meta property="og:image" content="">
+    <link rel="stylesheet" href="./assets/index.css">
+    <link rel='stylesheet' href='https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.6.2/css/bootstrap.min.css'>
+    <link rel="shortcut icon" href="./assets/icon.png" type="image/x-icon">
+    <style>
+        @font-face {
+            font-family: 'Roboto';
+            font-style: normal;
+            font-stretch: 100%;
+            font-display: block;
+            font-weight: 300 700;
+            src: url('./assets/roboto.woff2') format('woff2');
+            unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+        }
+
+        @font-face {
+          font-family: 'DancingScript';
+          src: url('./assets/DancingScript-Bold.ttf') format('truetype');
+        }
+
+        @font-face {
+          font-family: 'Caveat';
+          src: url('./assets/Caveat-Medium.ttf') format('truetype');
+        }
+
+        @font-face {
+          font-family: 'Alegreya';
+          src: url('./assets/Alegreya-Regular.ttf') format('truetype');
+        }
+
+        * {
+            box-sizing: border-box;
+        }
+
+        video {
+            background-color: #000000;
+            aspect-ratio: 832 / 480;
+        }
+
+        /* Part 1 videos have the reference strip baked in: 832x666, not 832x480.
+           Declaring the true ratio is what removes the letterbox bars. */
+        #video_group_1 video {
+            aspect-ratio: 832 / 666;
+        }
+
+        /* Tighten the grid: 3 across with a hairline gutter and no row padding. */
+        #video_group_1 .flex {
+            gap: 2px;
+            justify-content: flex-start;
+            padding: 0;
+        }
+
+        #video_group_1 .flex > div {
+            width: calc((100% - 2 * 2px) / 3);
+            margin-top: 0;
+            margin-bottom: 0;
+        }
+
+        @media (max-width: 768px) {
+            #video_group_1 .flex > div {
+                width: calc((100% - 2px) / 2);
+            }
+        }
+
+        @media (max-width: 512px) {
+            #video_group_1 .flex > div {
+                width: 100%;
+            }
+        }
+
+        section.portrait video {
+            background-color: #000000;
+            aspect-ratio: 832 / 480;
+            object-fit: cover;
+        }
+
+        section.multi_ip video {
+            background-color: #000000;
+            aspect-ratio: 4 / 3;
+            object-fit: cover;
+        }
+
+        section.portrait .prompt-wrap.full-screen-wrap video {
+            object-fit: cover;
+        }
+
+        section.portrait .flex {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: flex-start;
+            gap: 10px;
+        }
+
+        section.portrait2 .flex {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            justify-content: flex-start;
+        }
+
+        section.portrait .flex > div {
+            flex: 0 0 calc((100% - 5 * 10px) / 6);
+        }
+        section.portrait2 .flex > div {
+            flex: 0 0 calc((100% - 1 * 10px) / 2);
+        }
+
+        section.portrait .prompt {
+            font-size: 10px;
+        }
+        section.portrait2 .prompt {
+            font-size: 12px;
+        }
+
+        section.portrait .flex-row {
+            flex-direction: row;
+            justify-content: center;
+            align-items: center;
+        }
+
+        section.portrait2 .flex-row {
+            flex-direction: row;
+            justify-content: center;
+            align-items: center;
+        }
+
+        @media (max-width: 768px) {
+            section.portrait .flex > div {
+                flex: 0 0 calc((100% - 1 * 10px) / 2);
+            }
+        }
+
+        @media (max-width: 768px) {
+            section.portrait2 .flex > div {
+                flex: 0 0 calc((100% - 0 * 10px) / 1);
+            }
+        }
+
+        /* Ensure prompt adjusts for portrait mode */
+        .portrait .prompt {
+            position: absolute;  /* Allow positioning relative to the container */
+            bottom: 5%;          /* Adjust this to control the vertical placement of the prompt */
+            left: 50%;           /* Center horizontally */
+            transform: translateX(-50%); /* Offset by 50% of its width to truly center */
+            max-width: 80%;
+            text-align: center;  /* Center the text inside the prompt */
+            color: white;        /* Optional, if you want the text to stand out */
+            font-size: 1.2em;    /* Optional, adjust the text size */
+        }
+
+        .portrait2 .prompt{
+            position: absolute;  /* Allow positioning relative to the container */
+            bottom: 5%;          /* Adjust this to control the vertical placement of the prompt */
+            left: 50%;           /* Center horizontally */
+            transform: translateX(-50%); /* Offset by 50% of its width to truly center */
+            max-width: 80%;
+            text-align: center;  /* Center the text inside the prompt */
+            color: white;        /* Optional, if you want the text to stand out */
+            font-size: 1.2em;    /* Optional, adjust the text size */
+        }
+
+        body {
+            background-color: #000000;
+            color: #ffffff;
+            font-family: "Roboto", sans-serif;
+            padding: 0;
+            margin: 0;
+        }
+
+        #intro {
+            padding: 250px 0 80px 0;
+            justify-content: center;
+            text-align: center;
+            background: transparent;  /*  */
+            color: #ffffff; /*  */
+            position: relative;
+            height: 100vh;  /*  */
+            width: 100%;    /*  */
+        }
+
+        #background-video {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            object-fit: cover; /*  */
+            z-index: -1; /**/
+            filter: brightness(0.3); /*  */
+        }
+
+        #intro h1 {
+            font-size: 90px;
+            font-weight: 300;
+            margin: 20px 0;
+        } 
+
+        #intro h2 {
+            margin: 20px 0 40px 0;
+            font-weight: 300;
+            color: #ffffff
+        }
+
+        #intro h2 strong {
+            color: #fff;
+        }
+
+        .authors {
+            font-size: 16px;
+            font-weight: 500;
+            color: #ffffff;
+            text-align: center;
+            margin-bottom: 25px;
+            width: 80%;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        .author-block {
+            display: inline-block;
+            margin: 0 10px 0 10px;
+        }
+
+        .author-block a {
+            color: #ffffff;
+            text-decoration: none;
+            transition: color 0.3s ease;
+        }
+
+        .author-block a:hover {
+            color: #fff;
+        }
+
+        .author-affiliation {
+            font-size: 16px;
+            color: #ffffff;
+            text-align: center;
+            margin-bottom: 60px;
+            width: 80%;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        .author-affiliation .author-block {
+            display: inline-block;
+            margin: 0 15px;
+        }
+
+        section {
+            max-width: 1920px;
+            margin: 0 auto;
+        }
+
+        .content {
+            padding: 0 10%;
+        }
+
+        .button {
+            background-color: #ccc;
+            color: #000;
+            padding: 10px 20px;
+            border-radius: 100px;
+            cursor: pointer;
+            transition: background-color 0.5s;
+            text-decoration: none;
+            margin-right: 8px;
+            margin-bottom: 8px;
+            display: inline-block;
+        }
+
+        .button:hover {
+            background-color: #fff;
+        }
+
+        .bibtex-section {
+            background-color: #111;
+            padding: 40px 10%;
+            text-align: center;
+            margin-top: 60px;
+            color: #ccc;
+        }
+
+        .bibtex-section h3 {
+            font-size: 24px;
+            font-weight: 400;
+            color: #ccc;
+            margin-bottom: 20px;
+        }
+
+        .bibtex-code {
+            background-color: #222;
+            color: #ddd;
+            padding: 20px;
+            border-radius: 10px;
+            text-align: left;
+            display: inline-block;
+            font-family: monospace;
+            max-width: 800px;
+            overflow-x: auto;
+        }
+
+        section {
+            margin-top: 100px;
+        }
+        section:first-of-type {
+            margin-top: 0;
+        }
+
+        .title {
+            background-color: #000;
+            position: sticky;
+            top: 0;
+            padding: 20px 10%;
+            font-size: 20px;
+            font-weight: 600;
+            z-index: 1000;
+            min-height: 60px;
+            box-sizing: border-box;
+        }
+
+        .description {
+            padding: 0 10% 20px 10%;
+            color: #fff;
+            line-height: 25px;
+            font-weight: 300;
+        }
+
+        .highlight {
+            color: #fff;
+            font-weight: 500;
+        }
+
+        .flex-row {
+            display: flex;
+            column-gap: 5px;
+            flex-wrap: nowrap;
+            justify-content: space-between;
+            padding: 0 5px 5px 5px;
+            
+        }
+
+        .flex-row > div {
+            flex-grow: 1;
+            flex-basis: 0;
+            position: relative;
+        }
+
+        .flex > div {
+            width: calc(100% / 3 - 5px * 2 / 3);
+            margin-top: 2.5px;
+            margin-bottom: 2.5px;
+            position: relative;
+        }
+
+        .flex {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: space-between;
+            padding: 0 5px;
+        }
+
+        .prompt-wrap {
+            position: relative;
+        }
+
+        .flex-2 {
+            justify-content: center;
+            column-gap: 5px;
+        }
+        .flex-2 > div {
+            width: calc(100% / 2 - 5px / 2);
+            min-width: calc(100% / 3 - 5px * 2 / 3);
+            max-width: calc(100vh - 200px);
+        }
+
+        video, img {
+            width: 100%;
+            display: block; /* kills the inline baseline gap under each video */
+        }
+
+        .loading-placeholder {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            font-size: 48px;
+            color: rgba(255, 255, 255, 0.6);
+            background: rgba(0, 0, 0, 0.5);
+        }
+
+        .loading-text {
+            font-size: 30px;
+            margin-bottom: 10px;
+        }
+
+        .loading-icon {
+            font-size: 48px;
+        }
+
+        .prompt {
+            max-width: calc(100% - 20px);
+            position: absolute;
+            background: rgba(0,0,0,0.5);
+            color: rgba(255,255,255,0.9);
+            font-size: 10px;
+            backdrop-filter: blur(10px);
+            bottom: 10px;
+            left: 10px;
+            padding: 5px 10px;
+            border-radius: 15px;
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity 0.5s;
+            box-sizing: border-box;
+        }
+
+        .flex-very-compact .full-screen-button {
+            width: 100%;
+            height: 100%;
+            top: 0;
+            right: 0;
+            border-radius: 0;
+        }
+
+        .chinese {
+            font-family: 'Noto Sans SC', sans-serif;
+            font-weight: bold;
+            color: #d18585;
+            font-size: 1.1em;
+        }
+
+        @media (hover: hover) {
+            .prompt-wrap:hover .prompt,
+            .full-screen-wrap:hover .full-screen-button {
+                opacity: 1;
+                pointer-events: all;
+            }
+            #contributors a:hover {
+                background-color: #222;
+            }
+        }
+
+        @media (hover: none) {
+            #contributors a {
+                pointer-events: none;
+            }
+        }
+        
+        @media (max-width: 768px) {
+            .flex-dynamic > div {
+                width: calc(100% / 2 - 5px / 2);
+            }
+        }
+
+        @media (max-width: 640px) {
+            #intro h1 {
+                font-size: 50px;
+            }
+            #intro h2 {
+                font-size: 20px;
+            }
+            .ruler {
+                font-size: 10px;
+            }
+        }
+
+        @media (max-width: 512px) {
+            .flex-dynamic > div,
+            .flex-dynamic-1 > div {
+                width: 100%;
+            }
+
+            .content {
+                padding: 0 12px;
+            }
+
+            .description {
+                padding: 0 12px 20px 12px;
+            }
+
+            .title {
+                padding: 20px 12px;
+            }
+
+            .ruler-tight {
+                font-size: 6px;
+                column-gap: 0;
+            }
+
+            .title-long {
+                font-size: 16px;
+            }
+
+        }
+
+        .margin-top {
+            margin-top: 50px;
+        }
+
+        .ruler {
+            text-align: center;
+            position: sticky;
+            top: 60px;
+            z-index: 999;
+            background-color: #000;
+            color: #999;
+            padding: 5px 0;
+        }
+
+        .ruler > div {
+            width: 100%;
+            overflow: hidden;
+        }
+
+        .selected {
+            box-shadow: 0 0 0 5px #fff;
+        }
+
+        #title-container {
+          display: flex;
+          align-items: center;
+          justify-content: center;
+        }
+
+        #title-icon {
+          height: 8em;
+          width: auto;
+          margin-right: 0px;
+          vertical-align: middle;
+        }
+
+        .title-art {
+          font-family: 'Alegreya', sans-serif;
+        }
+
+        .title-art2 {
+          font-family: 'Alegreya', sans-serif;
+        }
+
+        .title-art3 {
+          font-family: 'Alegreya', sans-serif;
+        }
+
+        h2 {
+            font-size: 2.5em;
+            color: rgb(255, 255, 255);
+            text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.3);
+        }
+
+        #video-wrapper {
+          border-radius: 50px;
+          max-width: 720px;
+          padding-bottom: 40%; 
+          margin: 0 auto;
+          background: #000000;
+        }
+
+        .ethics-section {
+            padding: 100px 10%;
+            text-align: center;
+            margin-top: 60px;
+            color: #ccc;
+            max-width: 1500px;
+            margin: 0 auto;
+        }
+
+        .acknowledgements-section {
+            padding: 100px 10%;
+            text-align: center;
+            margin-top: 60px;
+            color: #ccc;
+            max-width: 1500px;
+            margin: 0 auto;
+        }
+
+        /* Custom style setting */
+        /* comparison style */
+        .video-group-full {
+        margin: 60px 0;
+        }
+        .video-group-full .group-title {
+        font-size: 24px;
+        font-weight: 600;
+        text-align: center;
+        margin-bottom: 20px;
+        color: #ffffff; /* title color */
+        }
+
+        /* fit the entire space */
+        .video-container-full {
+        width: 90% !important;
+        max-width: 90% !important;
+        padding: 0 !important;
+        margin: 0 auto !important;
+        }
+        .full-video {
+        width: 100% !important;
+        height: auto !important;
+        display: block !important;
+        border-radius: 6px; /* setting */
+        /* Use each file's own ratio. The global video rule pins 832/480, which
+           letterboxes these wide comparison grids (3328x1216 = 2.737). */
+        aspect-ratio: auto !important;
+        object-fit: fill;
+        }
+
+        /* content information */
+        .toc-section {
+            max-width: 1200px;
+            margin: 80px auto;
+            padding: 40px 10%;
+            background-color: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            border-radius: 12px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+            backdrop-filter: blur(4px);
+        }
+        .toc-section h3 {
+            font-size: 1.8rem;
+            font-weight: bold;
+            color: white;
+            text-align: center;
+            margin-bottom: 2rem;
+        }
+        .toc-list {
+            list-style: none;
+            padding: 0;
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 15px;
+        }
+        .toc-list li {
+            margin: 5px 0;
+        }
+        .toc-list a {
+            color: #ffffff;
+            text-decoration: none;
+            font-size: 1.1rem;
+            padding: 10px 20px;
+            background-color: rgba(255, 255, 255, 0.1);
+            border-radius: 8px;
+            transition: all 0.3s ease;
+        }
+        .toc-list a:hover {
+            background-color: rgba(255, 255, 255, 0.2);
+            transform: translateY(-2px);
+        }
+    </style>
+
+</head>
+<body>
+    <section id="intro">
+        <!--teaser video here -->
+        <video autoplay muted loop id="background-video">
+            <source src="./assets/streamingr2v_video/0_page_video/demo.mp4" type="video/mp4">
+        </video>
+        <div class="content">
+            <div id="title-container">
+              <!-- <img id="title-icon" src="./assets/icon-new.png" alt="Icon"> -->
+              <h1 class="title-art"><strong>StreamingR2V</strong></h1>
+            </div>
+            <h2 class="title-art2">Towards Long and Interactive Reference-to-Video Generation</h2>
+            
+
+            <!-- Added the affiliations section -->
+            <div class="author-affiliation">
+                <p><span>Anonymous Submission</span></p>
+            </div>
+            
+        </div>
+
+    </section>
+
+
+    <!-- <div style="text-align:center; margin: 0px 0;">
+    <img 
+        src="./assets/streamingr2v_video/0_page_video/logo.png" 
+        alt="Logo"
+        style="width:35%; height:auto; display:inline-block;">
+    </div> -->
+
+
+    <section class="acknowledgements-section" style="max-width: 1200px; margin: 0 auto;">
+        <div style="
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            border-radius: 12px;
+            padding: 30px;
+            background-color: rgba(255, 255, 255, 0.05);
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+            backdrop-filter: blur(4px);
+        ">
+                <h3 style="text-align: center; font-weight: bold; font-size: 1.8rem; margin-bottom: 1rem; color: white;">
+                    Introduction
+                </h3>
+                    <p style="font-size: 1.05rem; line-height: 1.6; color: white; text-align: left; text-indent: 2em;"></p>
+                        Existing reference-to-video methods render user-specified subjects faithfully, but only within a short clip whose cast is fixed before generation begins. Real shots don't work that way: subjects enter and leave partway through, and creators want to adjust the cast while the video is still unfolding. StreamingR2V opens up both limits at once. It keeps the horizon open-ended and lets references be added or removed as generation proceeds, so a subject can join or exit at any moment in a long video while the identities already on screen stay intact.  
+                    </p>
+        </div>
+    </section>
+
+    <!-- add content -->
+    <section class="toc-section">
+        <h3>Contents</h3>
+        <ul class="toc-list">
+            <li><a href="#video_group_1">1. Demonstration Part 1: General Interactive Reference-to-Video Generation</a></li>
+            <li><a href="#video_group_2">2. Demonstration Part 2: More Challenging Long and Interactive Reference-to-Video Generation</a></li>
+            <li><a href="#qualitative-comparison">3. Qualitative Comparison with Previous Methods and Baselines</a></li>
+        </ul>
+    </section>
+
+    <section id="video_group_1">
+        <div class="title" style="text-align: center;font-family: 'Alegreya'; font-size: 2.0em;">
+          Demonstration Part 1: General Interactive Reference-to-Video Generation
+        </div>
+        <div class="description", style="font-size: 1.2em;">
+            We provide a general demonstration of StreamingR2V's capability for interactive generation when new subjects enter or exit midway through generation. Each video includes a reference set schedule at the top. Please also refer to the prompt that appears when you hover over a specific video example, which describes how a newly entering subject interacts with subjects already present in the video or how they exit the frame. 
+        </div>
+
+        
+        <div class="flex flex-dynamic">
+            <!-- Sample 1 -->
+            <div class="prompt-wrap full-screen-wrap" style="position: relative;">
+                <div class="loading-placeholder">
+                    <div class="loading-text">Loading...</div>
+                    <div class="loading-icon">&#9749</div>
+                </div>
+                <video autoplay playsinline muted loop onloadeddata="this.style.display='block'; this.previousElementSibling.style.display='none';" src="./assets/streamingr2v_video/1_10s/1-1_stacked.mp4"></video>
+                <div class="prompt"> [Prompt 1] Inside a brightly lit medieval palace, a woman stands at the center of the frame, facing the camera. <br> [Prompt 2] A black-curly-haired man enters the frame and takes out an elegant crown adorned with sparkling red gemstones from the bottom of the frame. He shows the crown to the woman. </div>
+            </div>
+            <!-- Sample 2 -->
+            <div class="prompt-wrap full-screen-wrap" style="position: relative;">
+                <div class="loading-placeholder">
+                    <div class="loading-text">Loading...</div>
+                    <div class="loading-icon">&#9749</div>
+                </div>
+                <video autoplay playsinline muted loop onloadeddata="this.style.display='block'; this.previousElementSibling.style.display='none';" src="./assets/streamingr2v_video/1_10s/1-2_stacked.mp4"></video>
+                <div class="prompt">[Prompt 1] In a gym, a man stands behind a table, facing the camera and speaking while occasionally gesturing. On the table is an open white cardboard box. <br> [Prompt 2] The man reaches both hands into the box, takes out a canned protein powder product, holds it up, and continues introducing it to the camera. </div>
+            </div>
+            <!-- Sample 3 -->
+            <div class="prompt-wrap full-screen-wrap" style="position: relative;">
+                <div class="loading-placeholder">
+                    <div class="loading-text">Loading...</div>
+                    <div class="loading-icon">&#9749</div>
+                </div>
+                <video autoplay playsinline muted loop onloadeddata="this.style.display='block'; this.previousElementSibling.style.display='none';" src="./assets/streamingr2v_video/1_10s/1-3_stacked.mp4"></video>
+                <div class="prompt">[Prompt 1] In a light-luxury living room, a red metallic humanoid robot sits on a long brown sofa, facing the camera and raising its hand in expressive gestures. <br> [Prompt 2] A cute brown puppy runs in from the left side of the frame, jumps onto the sofa, and lies besides the robot. </div>
+            </div>
+        </div>
+    </section>
+
+
+    <section id="qualitative-comparison">
+        <div class="video-group-full">
+            <div class="title" style="text-align: center;font-family: 'Alegreya'; font-size: 2.0em;">
+            Qualitative Comparison with Previous Methods
+            </div>
+            <div class="description", style="font-size: 1.2em;">
+                We present qualitative video comparisons between StreamingR2V and existing baseline methods. Since streaming reference-to-video generation is relatively new, there are not many direct comparable methods. The comparable baselines include commercial models (Kling-Omni and MiniMax-H3), two-stage baselines that concatenate R2V models with SVI, and a baseline that directly tunes the SVI model on our SR2V dataset mentioned in the paper.
+            </div>
+            <!-- Sample 1 -->
+            <div class="video-container-full">
+                <video class="full-video" controls muted loop playsinline>
+                <source src="assets/streamingr2v_video/3_comparison/10s_comparison_1.mp4" type="video/mp4">
+                </video>
+            </div>
+            <div class="video-caption-text" style="text-align:center; margin-top:12px; margin-bottom:16px; font-size:14px; color:#ffffff;">
+                    Qualitative comparison of general streaming reference-to-video generation. Two-stage baselines and SVI-R2V SFT suffer from severe background inconsistencies and abrupt motion changes. Although MiniMax and Kling-Omni generate fluent videos, they tend to expose the subject identity too early at the beginning, because all reference images are provided upfront.
+            </div>
+        </div>
+    </section>
+
+    <!-- <section id="multi_ip">
+        <div class="title" style="text-align: center;font-family: 'Alegreya'; font-size: 2.0em;">
+            Practical Application (e.g, livestream product promoting with 1280 x 720 resolution)
+        </div>
+
+        <div class="description">
+            <strong>HoCo</strong> enables HOC video personalization with vertical high resolution, which is well-suited for a variety of practical applications including live-stream product promotion and creative content generation.
+        </div>
+
+    <style>
+        #multi_ip .flex-dynamic {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px; /*  */
+            justify-content: flex-start;
+            padding: 0 5px;
+        }
+        #multi_ip .full-screen-wrap {
+            aspect-ratio: 9 / 16; /*  */
+            /*  */
+            width: calc(25% - 7.5px); 
+            flex-shrink: 0;
+            overflow: hidden;
+            border-radius: 4px;
+            position: relative;
+            margin-top: 2.5px;
+            margin-bottom: 2.5px;
+        }
+        /* */
+        #multi_ip .full-screen-wrap video {
+            width: 100%;
+            height: 100%;
+            object-fit: cover; /*  */
+            display: none;
+            background-color: #000;
+            aspect-ratio: unset; /* */
+        }
+        #multi_ip .loading-placeholder {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            min-height: 1000px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            background: rgba(0,0,0,0.5);
+            color: rgba(255,255,255,0.6);
+            font-size: 48px;
+            z-index: 10; /*  */
+        }
+        #multi_ip .loading-text {
+            font-size: 24px;
+            margin-bottom: 10px;
+            line-height: 1.6;
+        }
+        #multi_ip .loading-icon {
+            font-size: 48px;
+        }
+        #multi_ip .prompt {
+            max-width: calc(100% - 20px);
+            position: absolute;
+            background: rgba(0,0,0,0.5);
+            color: rgba(255,255,255,0.9);
+            font-size: 10px;
+            backdrop-filter: blur(10px);
+            bottom: 10px;
+            left: 10px;
+            padding: 5px 10px;
+            border-radius: 15px;
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity 0.5s;
+            box-sizing: border-box;
+        }
+        #multi_ip .prompt-wrap:hover .prompt {
+            opacity: 1;
+            pointer-events: all;
+        }
+        /*  */
+        @media (max-width: 768px) {
+            #multi_ip .full-screen-wrap {
+                width: calc(50% - 5px); /*  */
+            }
+        }
+        @media (max-width: 512px) {
+            #multi_ip .full-screen-wrap {
+                width: 100%; /*  */
+            }
+        }
+    </style>
+
+        <div class="flex flex-dynamic">
+            <div class="prompt-wrap full-screen-wrap" style="position: relative;">
+                <div class="loading-placeholder">
+                    <div class="loading-text">Loading...</div>
+                    <div class="loading-icon">&#9749</div>
+                </div>
+                <video autoplay playsinline muted loop onloadeddata="this.style.display='block'; this.previousElementSibling.style.display='none';" src="./assets/streamingr2v_video/5_vertical_videos/sample_1/video_1.mp4"></video>
+                <div class="prompt">A young man is standing in a clean and tidy kitchen, introducing potato chip package. He holds the product in his hand, presenting it to the viewer with a slight smile. The background features open shelves, ceramic dishes and soft under-cabinet lighting, creating a rustic and inviting atmosphere.</div>
+            </div>
+            <div class="prompt-wrap full-screen-wrap" style="position: relative;">
+                <div class="loading-placeholder">
+                    <div class="loading-text">Loading...</div>
+                    <div class="loading-icon">&#9749</div>
+                </div>
+                <video autoplay playsinline muted loop onloadeddata="this.style.display='block'; this.previousElementSibling.style.display='none';" src="./assets/streamingr2v_video/5_vertical_videos/sample_2/video_2.mp4"></video>
+                <div class="prompt">A man is sitting in a fast-food restaurant, facing the camera and holding a bucket of fried chicken. He introduces the fried chicken with a gentle smile.</div>
+            </div>
+            <div class="prompt-wrap full-screen-wrap" style="position: relative;">
+                <div class="loading-placeholder">
+                    <div class="loading-text">Loading...</div>
+                    <div class="loading-icon">&#9749</div>
+                </div>
+                <video autoplay playsinline muted loop onloadeddata="this.style.display='block'; this.previousElementSibling.style.display='none';" src="./assets/streamingr2v_video/5_vertical_videos/sample_3/video_3.mp4"></video>
+                <div class="prompt">A young woman is facing the camera and introducing a baby formula container. She holds the product, smiles, and gestures towards it. The background features a soft linen bedspread and a wooden nightstand, creating a warm and inviting atmosphere.</div>
+            </div>
+            <div class="prompt-wrap full-screen-wrap" style="position: relative;">
+                <div class="loading-placeholder">
+                    <div class="loading-text">Loading...</div>
+                    <div class="loading-icon">&#9749</div>
+                </div>
+                <video autoplay playsinline muted loop onloadeddata="this.style.display='block'; this.previousElementSibling.style.display='none';" src="./assets/streamingr2v_video/5_vertical_videos/sample_4/video_4.mp4"></video>
+                <div class="prompt">A man is facing the camera and placing a bag of dog food gently on the table and introducing the product. The background is a cozy indoor space with a soft carpet, a lovely dog, creating a warm and pet-loving atmosphere.</div>
+            </div>
+            <div class="prompt-wrap full-screen-wrap" style="position: relative;">
+            <div class="loading-placeholder">
+                <div class="loading-text">Loading...</div>
+                <div class="loading-icon">&#9749</div>
+            </div>
+            <video autoplay playsinline muted loop onloadeddata="this.style.display='block'; this.previousElementSibling.style.display='none';" src="./assets/streamingr2v_video/5_vertical_videos/sample_5/video_5.mp4"></video>
+            <div class="prompt">A young woman is facing the camera and introducing a jar of herbal powder and gently placing it on a table. Next to the jar are a ceramic cup and a small spoon. The background features tatami mats, shoji screens and a bamboo tea set..</div>
+            </div>
+            <div class="prompt-wrap full-screen-wrap" style="position: relative;">
+            <div class="loading-placeholder">
+                <div class="loading-text">Loading...</div>
+                <div class="loading-icon">&#9749</div>
+            </div>
+            <video autoplay playsinline muted loop onloadeddata="this.style.display='block'; this.previousElementSibling.style.display='none';" src="./assets/streamingr2v_video/5_vertical_videos/sample_6/video_6.mp4"></video>
+            <div class="prompt">A man is facing the camera and introducing a bottle of bathroom cleaner in a tidy bathroom. He holds the product, smiling warmly. The background features a bathroom with a spa-style shower, heated floors and a towel warmer, comfortable and indulgent.</div>
+            </div>
+            <div class="prompt-wrap full-screen-wrap" style="position: relative;">
+            <div class="loading-placeholder">
+                <div class="loading-text">Loading...</div>
+                <div class="loading-icon">&#9749</div>
+            </div>
+            <video autoplay playsinline muted loop onloadeddata="this.style.display='block'; this.previousElementSibling.style.display='none';" src="./assets/streamingr2v_video/5_vertical_videos/sample_7/video_7.mp4"></video>
+            <div class="prompt">A man wearing glasses is facing the camera and introducing a medicine package. He holds the product in his hand. The background features a Japanese tea room with woven tatami and paper screens, calm and authentic.</div>
+            </div>
+            <div class="prompt-wrap full-screen-wrap" style="position: relative;">
+            <div class="loading-placeholder">
+                <div class="loading-text">Loading...</div>
+                <div class="loading-icon">&#9749</div>
+            </div>
+            <video autoplay playsinline muted loop onloadeddata="this.style.display='block'; this.previousElementSibling.style.display='none';" src="./assets/streamingr2v_video/5_vertical_videos/sample_8/video_8.mp4"></video>
+            <div class="prompt">A woman is facing the camera and introducing a bottle of sake. She holds the bottle, smiles, and gestures towards it. The background features a Japanese tea room with low tables, sliding doors and potted moss, serene and refined.</div>
+            </div>
+            <div class="prompt-wrap full-screen-wrap" style="position: relative;">
+            <div class="loading-placeholder">
+                <div class="loading-text">Loading...</div>
+                <div class="loading-icon">&#9749</div>
+            </div>
+            <video autoplay playsinline muted loop onloadeddata="this.style.display='block'; this.previousElementSibling.style.display='none';" src="./assets/streamingr2v_video/5_vertical_videos/sample_9/video_9.mp4"></video>
+            <div class="prompt">A man is facing the camera and introducing a fashion toy. He holds the toy with both hands, smiling warmly. The background features a living room with wooden bookcases, table plants, creating a scholarly calm atmosphere.</div>
+            </div>
+            <div class="prompt-wrap full-screen-wrap" style="position: relative;">
+            <div class="loading-placeholder">
+                <div class="loading-text">Loading...</div>
+                <div class="loading-icon">&#9749</div>
+            </div>
+            <video autoplay playsinline muted loop onloadeddata="this.style.display='block'; this.previousElementSibling.style.display='none';" src="./assets/streamingr2v_video/5_vertical_videos/sample_10/video_10.mp4"></video>
+            <div class="prompt">An animate fox is facing the camera and holding a pink backpack. The fox presents the backpack with a gentle smile. The background features an office with a wooden desk, desk lamp, creating a focused productive atmosphere.</div>
+            </div>
+            <div class="prompt-wrap full-screen-wrap" style="position: relative;">
+            <div class="loading-placeholder">
+                <div class="loading-text">Loading...</div>
+                <div class="loading-icon">&#9749</div>
+            </div>
+            <video autoplay playsinline muted loop onloadeddata="this.style.display='block'; this.previousElementSibling.style.display='none';" src="./assets/streamingr2v_video/5_vertical_videos/sample_11/video_11.mp4"></video>
+            <div class="prompt">A man in a red and silver uniform is facing the camera and introducing a black motorcycle helmet. He holds the helmet, presenting it to the viewer. The background is a sci-fi-style commanding room with a large monitor screen.</div>
+            </div>
+            <div class="prompt-wrap full-screen-wrap" style="position: relative;">
+            <div class="loading-placeholder">
+                <div class="loading-text">Loading...</div>
+                <div class="loading-icon">&#9749</div>
+            </div>
+            <video autoplay playsinline muted loop onloadeddata="this.style.display='block'; this.previousElementSibling.style.display='none';" src="./assets/streamingr2v_video/5_vertical_videos/sample_12/video_12.mp4"></video>
+            <div class="prompt">A man wearing a cowboy hat, holding a water bottle and smiling warmly at the camera. He stands in a classic American Western-style town with wooden storefronts, saloon signs, and dirt roads.</div>
+            </div>
+        </div>
+    </section> -->
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.6.2/js/bootstrap.min.js"></script>
+
+    <script>
+        $(document).ready(function () {
+            // Clone the items to show neighbors in the carousel
+            $('.carousel-item', '.show-neighbors').each(function () {
+                var next = $(this).next();
+                if (!next.length) {
+                    next = $(this).siblings(':first');
+                }
+                next.children(':first-child').clone().appendTo($(this));
+            }).each(function () {
+                var prev = $(this).prev();
+                if (!prev.length) {
+                    prev = $(this).siblings(':last');
+                }
+                prev.children(':nth-last-child(2)').clone().prependTo($(this));
+            });
+
+            function playActiveVideo() {
+                // Stop all videos
+                $('.carousel-video').each(function () {
+                    this.pause();
+                });
+                
+                // Find the active carousel item (the middle one) and play its video
+                var activeVideo = $('#carouselExampleCaptions .carousel-item.active .video-wrapper video.carousel-video').get(0);
+
+                // Play the video only if it exists
+                if (activeVideo) {
+                    activeVideo.play();
+                }
+            }
+
+            // On slide event, pause all videos
+            $('#carouselExampleCaptions').on('slide.bs.carousel', function () {
+                $('.carousel-video').each(function () {
+                    this.pause();
+                });
+            });
+
+            // On slid event, play the active video
+            $('#carouselExampleCaptions').on('slid.bs.carousel', function () {
+                playActiveVideo();
+            });
+
+            // Play the active video on page load
+            playActiveVideo();
+        });
+    </script>
+
+</body>
+
+
+</html>
