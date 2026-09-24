@@ -716,7 +716,7 @@
         <h3>Contents</h3>
         <ul class="toc-list">
             <li><a href="#video_group_1">1. Demonstration Part 1: General Interactive Reference-to-Video Generation</a></li>
-            <li><a href="#video_group_2">2. Demonstration Part 2: More Challenging Long and Interactive Reference-to-Video Generation </a></li>
+            <li><a href="#video_group_1">2. Demonstration Part 2: More Challenging Long and Interactive Reference-to-Video Generation </a></li>
             <li><a href="#qualitative-comparison">3. Qualitative Comparison with Previous Methods and Baselines</a></li>
         </ul>
     </section>
@@ -920,6 +920,77 @@
         </div>
     </section>
 
+    <section id="video_group_1">
+        <div class="title" style="text-align: center;font-family: 'Alegreya'; font-size: 2.0em;">
+          Demonstration Part 2: More Challenging Long and Interactive Reference-to-Video Generation
+        </div>
+        <div class="description", style="font-size: 1.2em;">
+            We provide additional examples to demonstrate StreamingR2V’s capability for interactive generation under more complex interaction schedules, such as increased interaction frequency and mixed entry-and-exit events. Please also refer to the prompt that appears when you hover over a specific video example, which describes how a newly entering subject interacts with subjects already present in the video or how they exit the frame. 
+        </div>
+
+        
+        <div class="flex flex-dynamic">
+            <!-- Sample 1-1 -->
+            <div class="prompt-wrap full-screen-wrap" style="position: relative;">
+                <div class="loading-placeholder">
+                    <div class="loading-text">Loading...</div>
+                    <div class="loading-icon">&#9749</div>
+                </div>
+                <video autoplay playsinline muted loop onloadeddata="this.style.display='block'; this.previousElementSibling.style.display='none';" src="./assets/streamingr2v_video/2_demo_part_2/1.mp4"></video>
+                <div class="prompt"> [Prompt 1] In a sunny garden, a carefully trimmed potted plant sits on a carved white marble display pedestal. Its flowers sway gently in the breeze. <br> [Prompt 2] A hummingbird flies in from the right side of the frame, fluttering rapidly, then hovers beside the potted flowers and tries to peck them with its beak. <br> [Prompt 3] The hummingbird suddenly flaps its wings and exits the frame. Only the marble display pedestal and potted plant remain in view. Static shot, bright garden lighting, stable composition, flowers gently moving in the breeze. <br> [Prompt 4] A man in a white shirt enters from the rear right and stops behind the display pedestal, facing the camera. His shoulders rise slightly above the potted plant. He speaks to the camera and occasionally touches the green leaves. <br> [Prompt 5] The hummingbird flies back into the scene from the left and hovers beside the potted flowers, </div>
+            </div>
+            <!-- Sample 1-2 -->
+            <div class="prompt-wrap full-screen-wrap" style="position: relative;">
+                <div class="loading-placeholder">
+                    <div class="loading-text">Loading...</div>
+                    <div class="loading-icon">&#9749</div>
+                </div>
+                <video autoplay playsinline muted loop onloadeddata="this.style.display='block'; this.previousElementSibling.style.display='none';" src="./assets/streamingr2v_video/2_demo_part_2/2.mp4"></video>
+                <div class="prompt">[Prompt 1] On a tidy sidewalk beside a British-style street, a man in a suit walks toward the camera. The camera moves smoothly with him, keeping him relatively still in frame. <br> [Prompt 2] As the camera moves, a red postbox appears on the sidewalk at the right side of the frame. The man stops beside it, and the camera also stops, becoming static. <br> [Prompt 3] A woman enters from the left, as she walks to the man’s side. The camera remains static. <br> [Prompt 4] The man and woman stand in place near the red postbox, look at each other, and begin a happy and chill conversation. </div>
+            </div>
+            <!-- Sample 1-3 -->
+            <div class="prompt-wrap full-screen-wrap" style="position: relative;">
+                <div class="loading-placeholder">
+                    <div class="loading-text">Loading...</div>
+                    <div class="loading-icon">&#9749</div>
+                </div>
+                <video autoplay playsinline muted loop onloadeddata="this.style.display='block'; this.previousElementSibling.style.display='none';" src="./assets/streamingr2v_video/2_demo_part_2/3.mp4"></video>
+                <div class="prompt">[Prompt 1] A man sits upright on in a bright and tidy living room, looks directly at the camera, holds the black-covered book in one hand, and speaks to the camera while occasionally gesturing. <br> [Prompt 2] The man opens the book and begins reading with focused attention while seated on the sofa. <br> [Prompt 3]  A cute solid-brown small puppy enters from the right side of the sofa, jumps onto the man’s knees, and settles there gently. <br> [Prompt 4] The man stops reading, lowers his head, and pets the puppy gently. The camera remains steady. Medium close-up, upper body visible, </div>
+            </div>
+        </div>
+
+        <hr>
+
+        <div class="flex flex-dynamic">
+            <!-- Sample 2-1 -->
+            <div class="prompt-wrap full-screen-wrap" style="position: relative;">
+                <div class="loading-placeholder">
+                    <div class="loading-text">Loading...</div>
+                    <div class="loading-icon">&#9749</div>
+                </div>
+                <video autoplay playsinline muted loop onloadeddata="this.style.display='block'; this.previousElementSibling.style.display='none';" src="./assets/streamingr2v_video/2_demo_part_2/4.mp4"></video>
+                <div class="prompt"> [Prompt 1] In a sunny forest clearing, a man in a plaid shirt sits on a picnic blanket spread over fallen leaves, facing the camera while eating bread. <br> [Prompt 2] A woman in a white top enters from the rear right side of the frame, walks to the man’s side, and sits down.  <br> [Prompt 3] The woman and the man start a chill conversation, and the woman occasionally claps and smiles while listening to the man. <br> [Prompt 4] A chicken walks in from the left side of the frame and stops in front of the man and woman. The man and woman continue their friendly conversation while the chicken occasionally looks around. </div>
+            </div>
+            <!-- Sample 2-2 -->
+            <div class="prompt-wrap full-screen-wrap" style="position: relative;">
+                <div class="loading-placeholder">
+                    <div class="loading-text">Loading...</div>
+                    <div class="loading-icon">&#9749</div>
+                </div>
+                <video autoplay playsinline muted loop onloadeddata="this.style.display='block'; this.previousElementSibling.style.display='none';" src="./assets/streamingr2v_video/2_demo_part_2/5.mp4"></video>
+                <div class="prompt">[Prompt 1] On a sidewalk along a British-style street, a shepherd dog walks leisurely and slowly to the right side of the frame. The camera moves smoothly and steadily to the right, tracking with the dog and keeping it relatively still in the frame. <br> [Prompt 2] As the camera moves, a red postbox appears on the sidewalk. The shepherd dog stops beside it, and the camera stops as well, becoming static. <br> [Prompt 4] A man wearing an apron enters the frame, walks behind the shepherd dog, then crouches down and smiles at it. Static eye-level frontal medium-wide shot, full body visible during entry. <br> [Prompt 4] The shepherd dog jumps into the man’s arms. The man holds the dog with both hands and smiles toward the camera. </div>
+            </div>
+            <!-- Sample 2-3 -->
+            <div class="prompt-wrap full-screen-wrap" style="position: relative;">
+                <div class="loading-placeholder">
+                    <div class="loading-text">Loading...</div>
+                    <div class="loading-icon">&#9749</div>
+                </div>
+                <video autoplay playsinline muted loop onloadeddata="this.style.display='block'; this.previousElementSibling.style.display='none';" src="./assets/streamingr2v_video/2_demo_part_2/6.mp4"></video>
+                <div class="prompt">[Prompt 1] On a grassland in front of a beautiful house, a cat is sitting upright on the right front of a cushioned rattan chair. Stable static medium shot. <br> [Prompt 2] The cat jumps from the ground onto the cushioned rattan chair, then crouches on the seat and looks around alertly. <br> A chicken slowly enters from the right side of the frame, walks across the grassland, and stops directly in front of the chair. The cat remains crouched on the cushion above, alertly looking around. <br> [Prompt 4] The kitten jumps down from the rattan chair and runs out of the frame on the right side. Only the rattan chair and the chicken remain visible in the frame. </div>
+            </div>
+        </div>
+    </section>
 
     <section id="qualitative-comparison">
         <div class="video-group-full">
@@ -940,6 +1011,8 @@
             </div>
         </div>
     </section>
+
+
 
     <!-- <section id="multi_ip">
         <div class="title" style="text-align: center;font-family: 'Alegreya'; font-size: 2.0em;">
